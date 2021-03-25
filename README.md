@@ -1,4 +1,14 @@
-[![AOS - Animate on scroll library](https://s32.postimg.org/ktvt59hol/aos_header.png)](http://michalsnik.github.io/aos/)
+## This is a patched version of AOS (based on aos@next 3.0.0-beta.6)
+### Included PRs
+- [fix: wrong custom event name for specific elements targeted events](https://github.com/michalsnik/pull/408)
+- [Update scroll-listener to passive](https://github.com/michalsnik/pull/568)
+- [fix event listener leak and also support custom scroll event](https://github.com/michalsnik/pull/659)
+
+### Custom improvements
+- add aos:beforein & aos:beforeout events that fire just before the animation class is added/removed
+
+---
+
 
 [![NPM version](https://img.shields.io/npm/v/aos/next.svg?style=flat)](https://npmjs.org/package/aos)
 [![NPM downloads](https://img.shields.io/npm/dm/aos.svg?style=flat)](https://npmjs.org/package/aos)
