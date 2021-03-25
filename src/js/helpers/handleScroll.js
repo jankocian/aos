@@ -42,11 +42,17 @@ const applyClasses = (el, top) => {
   const hide = () => {
     if (!el.animated) return;
 
+    fireEvent('aos:beforeout', node);
+
+    if (el.options.id) {
+      fireEvent(`aos:beforeout:${el.options.id}`, node);
+    }
     removeClasses(node, options.animatedClassNames);
+
     fireEvent('aos:out', node);
 
     if (el.options.id) {
-      fireEvent(`aos:in:${el.options.id}`, node);
+      fireEvent(`aos:out:${el.options.id}`, node);
     }
 
     el.animated = false;
@@ -54,6 +60,11 @@ const applyClasses = (el, top) => {
 
   const show = () => {
     if (el.animated) return;
+
+    fireEvent('aos:beforein', node);
+    if (el.options.id) {
+      fireEvent(`aos:beforein:${el.options.id}`, node);
+    }
 
     addClasses(node, options.animatedClassNames);
 
