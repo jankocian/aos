@@ -91,7 +91,11 @@ const applyClasses = (el, top) => {
  * @param  {array} $elements         array of elements nodes
  * @return {void}
  */
-const handleScroll = $elements =>
-  $elements.forEach((el, i) => applyClasses(el, window.pageYOffset));
+const handleScroll = ( $elements, scrollContainer ) => {
+  const scrollTop = ( scrollContainer == window ) ? window.pageYOffset : scrollContainer.scrollTop;
+
+  $elements.forEach((el, i) => applyClasses(el, scrollTop));
+}
+
 
 export default handleScroll;

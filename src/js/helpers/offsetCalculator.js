@@ -11,8 +11,13 @@
 import getOffset from './../libs/offset';
 import getInlineOption from './getInlineOption';
 
-export const getPositionIn = (el, defaultOffset, defaultAnchorPlacement) => {
-  const windowHeight = window.innerHeight;
+export const getPositionIn = (el, defaultOffset, defaultAnchorPlacement, scrollContainer = false) => {
+  if (scrollContainer) {
+    scrollContainer = window.document.querySelector(scrollContainer);
+  } else {
+    scrollContainer = window;
+  }
+  const windowHeight = scrollContainer.innerHeight;
   const anchor = getInlineOption(el, 'anchor');
   const inlineAnchorPlacement = getInlineOption(el, 'anchor-placement');
   const additionalOffset = Number(
@@ -60,8 +65,13 @@ export const getPositionIn = (el, defaultOffset, defaultAnchorPlacement) => {
   return triggerPoint + additionalOffset;
 };
 
-export const getPositionOut = (el, defaultOffset) => {
-  const windowHeight = window.innerHeight;
+export const getPositionOut = (el, defaultOffset, scrollContainer = false) => {
+  if (scrollContainer) {
+    scrollContainer = window.document.querySelector(scrollContainer);
+  } else {
+    scrollContainer = window;
+  }
+  const windowHeight = scrollContainer.innerHeight;
   const anchor = getInlineOption(el, 'anchor');
   const additionalOffset = getInlineOption(el, 'offset', defaultOffset);
   let finalEl = el;

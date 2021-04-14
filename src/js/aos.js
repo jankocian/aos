@@ -22,6 +22,7 @@ import elements from './helpers/elements';
  */
 let $aosElements = [];
 let initialized = false;
+let scrollContainer = window;
 
 /**
  * Default options
@@ -41,7 +42,8 @@ let options = {
   useClassNames: false,
   disableMutationObserver: false,
   throttleDelay: 99,
-  debounceDelay: 50
+  debounceDelay: 50,
+  scrollContainer: '',
 };
 
 // Detect not supported browsers (<=IE9)
@@ -54,7 +56,7 @@ const initializeScroll = function initializeScroll() {
   // Extend elements objects in $aosElements with their positions
   $aosElements = prepare($aosElements, options);
   // Perform scroll event, to refresh view and show/hide elements
-  handleScroll($aosElements);
+  handleScroll($aosElements, scrollContainer);
 
   /**
    * Handle scroll event to animate elements on scroll
@@ -62,14 +64,14 @@ const initializeScroll = function initializeScroll() {
   const eventName = options.customScrollEvent || 'scroll'
 
   if (currentScrollHandler) {
-    window.removeEventListener(eventName, currentScrollHandler)
+    scrollContainer.removeEventListener(eventName, currentScrollHandler)
   }
 
   currentScrollHandler = throttle((event) => {
     handleScroll($aosElements, event)
   }, options.throttleDelay)
 
-  window.addEventListener(eventName, currentScrollHandler, { passive: true })
+  scrollContainer.addEventListener(eventName, currentScrollHandler, { passive: true })
 
   return $aosElements;
 };
@@ -143,6 +145,10 @@ const isDisabled = function(optionDisable) {
 const init = function init(settings) {
   options = Object.assign(options, settings);
 
+  if (options.scrollContainer) {
+    scrollContainer = window.document.querySelector(options.scrollContainer);
+  }
+
   // Create initial array with elements -> to be fullfilled later with prepare()
   $aosElements = elements();
 
@@ -194,11 +200,11 @@ const init = function init(settings) {
    */
   if (['DOMContentLoaded', 'load'].indexOf(options.startEvent) === -1) {
     // Listen to options.startEvent and initialize AOS
-    document.addEventListener(options.startEvent, function() {
+    scrollContainer.addEventListener(options.startEvent, function() {
       refresh(true);
     });
   } else {
-    window.addEventListener('load', function() {
+    scrollContainer.addEventListener('load', function() {
       refresh(true);
     });
   }
@@ -214,12 +220,12 @@ const init = function init(settings) {
   /**
    * Refresh plugin on window resize or orientation change
    */
-  window.addEventListener(
+  scrollContainer.addEventListener(
     'resize',
     debounce(refresh, options.debounceDelay, true)
   );
 
-  window.addEventListener(
+  scrollContainer.addEventListener(
     'orientationchange',
     debounce(refresh, options.debounceDelay, true)
   );
